@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Excluir Cliente{% endblock %}
+
+{% block content %}
+<div class="panel p-4 mx-auto" style="max-width: 700px;">
+  <h2 class="mb-3 text-danger">Excluir cliente</h2>
+
+  <p>Tem certeza que deseja excluir este cliente?</p>
+
+  <div class="mb-4">
+    <strong>{{ cliente.nome }}</strong><br>
+    <span class="text-soft">CPF: {{ cliente.cpf }}</span>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="d-flex gap-2">
+      <a href="/clientes/{{ cliente.id }}/" class="btn btn-outline-light rounded-pill">Cancelar</a>
+      <button type="submit" class="btn btn-danger rounded-pill">Confirmar exclusão</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

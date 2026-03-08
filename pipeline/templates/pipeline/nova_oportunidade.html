@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Nova oportunidade</h2>
+
+<form method="post">
+{% csrf_token %}
+
+<div>
+<label>Cliente</label>
+{{ form.cliente }}
+</div>
+
+<div>
+<label>Convênio</label>
+{{ form.convenio }}
+</div>
+
+<div>
+<label>Produto</label>
+{{ form.produto }}
+</div>
+
+<div>
+<label>Responsável</label>
+{{ form.responsavel }}
+</div>
+
+<div>
+<label>Próximo contato</label>
+{{ form.proximo_contato }}
+</div>
+
+<br>
+
+<button type="submit">Salvar</button>
+
+</form>
+
+{% endblock %}

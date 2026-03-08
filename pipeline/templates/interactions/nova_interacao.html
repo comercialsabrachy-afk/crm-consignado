@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Nova Tratativa{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+  <h2 class="mb-1">Nova tratativa</h2>
+  <p class="text-white-50 mb-0">
+    Cliente: {{ oportunidade.cliente.nome }} |
+    Produto: {{ oportunidade.produto.nome }}
+  </p>
+</div>
+
+<form method="post" class="panel p-4">
+  {% csrf_token %}
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label">Resultado</label>
+      {{ form.resultado }}
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Próximo contato</label>
+      {{ form.proximo_contato }}
+    </div>
+
+    <div class="col-md-12">
+      <label class="form-label">Descrição</label>
+      {{ form.descricao }}
+    </div>
+  </div>
+
+  <button class="btn btn-primary rounded-pill mt-4">Salvar tratativa</button>
+</form>
+
+<script>
+  document.querySelectorAll("input, select, textarea").forEach(el => {
+    if (el.type !== "checkbox") {
+      el.classList.add("form-control");
+    }
+  });
+</script>
+{% endblock %}

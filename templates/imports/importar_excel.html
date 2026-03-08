@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Importar Excel - CRM Consignado{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+  <h2 class="mb-1">Importar clientes</h2>
+  <p class="text-white-50 mb-0">Envio de planilha Excel para cadastro em massa</p>
+</div>
+
+<div class="panel p-4">
+  <div class="alert alert-info">
+    O arquivo Excel deve conter as colunas:
+    <strong>nome, cpf, email, tel1, tel2</strong>
+  </div>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Arquivo Excel (.xlsx)</label>
+        {{ form.arquivo }}
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Convênio padrão</label>
+        <select class="form-select" name="convenio_id" required>
+          <option value="">Selecione</option>
+          {% for c in convenios %}
+            <option value="{{ c.id }}">{{ c.nome }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <button class="btn btn-primary rounded-pill mt-4">Importar lista</button>
+  </form>
+
+  {% if resultado %}
+    <hr class="my-4">
+
+    <h5>Resultado</h5>
+    <p><strong>Clientes importados:</strong> {{ resultado.importados }}</p>
+
+    <ul class="mb-0">
+      {% for erro in resultado.erros %}
+        <li class="text-danger">{{ erro }}</li>
+      {% empty %}
+        <li class="text-success">Nenhum erro encontrado</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</div>
+
+<script>
+  document.querySelectorAll("input, select, textarea").forEach(el => {
+    if (el.type !== "checkbox" && !el.classList.contains("form-select")) {
+      el.classList.add("form-control");
+    }
+  });
+</script>
+{% endblock %}

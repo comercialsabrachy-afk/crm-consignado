@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Cliente - CRM Consignado{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+  <div>
+    <h2 class="mb-1">{{ cliente.nome }}</h2>
+    <p class="text-soft mb-0">Ficha completa do cliente</p>
+  </div>
+
+  <div class="d-flex gap-2 flex-wrap">
+    <a class="btn btn-outline-light rounded-pill" href="/clientes/">Voltar</a>
+    <a class="btn btn-outline-warning rounded-pill" href="/clientes/{{ cliente.id }}/editar/">Editar</a>
+    <a class="btn btn-primary rounded-pill" href="/oportunidades/nova/?cliente={{ cliente.id }}">
+      Iniciar atendimento
+    </a>
+    <a class="btn btn-outline-danger rounded-pill" href="/clientes/{{ cliente.id }}/excluir/">
+      Excluir cliente
+    </a>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="panel p-4 h-100">
+      <h5 class="mb-3">Dados do cliente</h5>
+
+      <div class="mb-3">
+        <div class="text-soft small">Nome</div>
+        <div class="fw-bold">{{ cliente.nome }}</div>
+      </div>
+
+      <div class="mb-3">
+        <div class="text-soft small">CPF</div>
+        <div>{{ cliente.cpf }}</div>
+      </div>
+
+      <div class="mb-3">
+        <div class="text-soft small">Email</div>
+        <div>{{ cliente.email|default:"-" }}</div>
+      </div>
+
+      <div class="mb-3">
+        <div class="text-soft small">Data de nascimento</div>
+        <div>{{ cliente.data_nascimento|default:"-" }}</div>
+      </div>
+
+      <div class="mb-3">
+        <div class="text-soft small">Cidade</div>
+        <div>{{ cliente.cidade|default:"-" }}</div>
+      </div>
+
+      <div class="mb-3">
+        <div class="text-soft small">Endereço</div>
+        <div>{{ cliente.endereco|default:"-" }}</div>
+      </div>
+
+      <div class="mb-3">
+        <div class="text-soft small">Convênio principal</div>
+        <div>{{ cliente.convenio_principal.nome }}</div>
+      </div>
+
+      <div class="mb-3">
+        <div class="text-soft small">Observações</div>
+        <div>{{ cliente.observacoes|default:"-" }}</div>
+      </div>
+
+      <div class="mb-0">
+        <div class="text-soft small">Não contatar</div>
+        <div>
+          {% if cliente.nao_contatar %}
+            <span class="badge rounded-pill text-bg-danger">Sim</span>
+          {% else %}
+            <span class="badge rounded-pill text-bg-success">Não</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    <div class="panel p-4 mb-4">
+      <h5 class="mb-3">Telefones</h5>
+
+      {% for t in telefones %}
+        <div class="d-flex justify-content-between align-items-center border-bottom border-secondary-subtle py-2">
+          <div>{{ t.numero }}</div>
+          <span class="badge rounded-pill text-bg-secondary">{{ t.get_status_display }}</span>
+        </div>
+      {% empty %}
+        <p class="text-soft mb-0">Nenhum telefone cadastrado.</p>
+      {% endfor %}
+    </div>
+
+    <div class="panel p-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">Oportunidades / Atendimentos</h5>
+        <a class="btn btn-sm btn-primary rounded-pill" href="/oportunidades/nova/?cliente={{ cliente.id }}">
+          + Nova oportunidade
+        </a>
+      </div>
+
+      {% for o in oportunidades %}
+        <a href="/oportunidades/{{ o.id }}/" class="d-block text-decoration-none text-white border border-secondary-subtle rounded-4 p-3 mb-3">
+          <div class="fw-bold">{{ o.produto.nome }}</div>
+          <div class="text-soft small">
+            Convênio: {{ o.convenio.nome }} • Etapa: {{ o.get_etapa_display }}
+          </div>
+          <div class="text-soft small mt-1">
+            Próximo contato:
+            {% if o.proximo_contato %}
+              {{ o.proximo_contato }}
+            {% else %}
+              -
+            {% endif %}
+          </div>
+        </a>
+      {% empty %}
+        <p class="text-soft mb-0">Nenhuma oportunidade criada para este cliente.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

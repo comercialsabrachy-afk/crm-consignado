@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Atendimento do Cliente{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="mb-1">{{ oportunidade.cliente.nome }}</h2>
+    <p class="text-white-50 mb-0">
+      Convênio: {{ oportunidade.convenio.nome }} |
+      Produto: {{ oportunidade.produto.nome }} |
+      Etapa: {{ oportunidade.get_etapa_display }}
+    </p>
+  </div>
+  <a class="btn btn-primary rounded-pill" href="/interacoes/nova/{{ oportunidade.id }}/">
+    + Registrar tratativa
+  </a>
+</div>
+
+<div class="panel p-4">
+  <h5 class="mb-3">Histórico de tratativas</h5>
+
+  {% for i in interacoes %}
+    <div class="border-bottom border-secondary pb-3 mb-3">
+      <div class="fw-bold">{{ i.get_resultado_display }}</div>
+      <div class="text-white-50 small">{{ i.ocorrido_em }}</div>
+      <div class="mt-2">{{ i.descricao|default:"-" }}</div>
+      <div class="small mt-2">Próximo contato: {{ i.proximo_contato|default:"-" }}</div>
+    </div>
+  {% empty %}
+    <p class="text-white-50">Nenhuma tratativa registrada ainda.</p>
+  {% endfor %}
+</div>
+{% endblock %}
